@@ -4,13 +4,21 @@ Room 002: Shop
 
 */
 void Objectload_002(GlobalVariables* Main){
+	wprintf(L"\n%c%c	ID:002 Store",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
 	srand(time(NULL));
 	short i;
 	//sprite 000
 	SDL_Color color0={.r=255,.g=255,.b=255,.a=255};
 	i=rand()%2;
-	if(i==0) (Main->SpriteList+0)->Texture=LoadTexture(Main->MainRender,"media/backgrounds/Store (1).bmp");
-	else if(i==1) (Main->SpriteList+0)->Texture=LoadTexture(Main->MainRender,"media/backgrounds/Store (2).bmp");
+	if(i==0) (Main->SpriteList+0)->Texture=LoadTexture(Main->MainRender,"media/backgrounds/Store (1).bmp",&error);
+	else if(i==1) (Main->SpriteList+0)->Texture=LoadTexture(Main->MainRender,"media/backgrounds/Store (2).bmp",&error);
 	SDL_QueryTexture((Main->SpriteList+0)->Texture,NULL,NULL,&((Main->SpriteList+0)->Width),&((Main->SpriteList+0)->Height));
 	//(SpriteList+0)->Width=SCREEN_WIDTH;
 	//(SpriteList+0)->Height=SCREEN_HEIGHT;
@@ -19,9 +27,9 @@ void Objectload_002(GlobalVariables* Main){
 	(Main->SpriteList+0)->FrameNumber=1;
 	(Main->SpriteList+0)->speed=0;
 	if ((Main->SpriteList+0)->Texture==NULL)
-		printf("couldn't load background image %s",SDL_GetError);
+		wprintf(L"couldn't load background image %s",SDL_GetError);
 	//sprite 001.
-	(Main->SpriteList+1)->Texture=LoadTexture(Main->MainRender,"media/items/coin.bmp");
+	(Main->SpriteList+1)->Texture=LoadTexture(Main->MainRender,"media/items/coin.bmp",&error);
 	SDL_QueryTexture((Main->SpriteList+1)->Texture,NULL,NULL,&((Main->SpriteList+1)->Width),&((Main->SpriteList+1)->Height));
 	//(SpriteList+1)->Width=SCREEN_WIDTH;
 	//(SpriteList+1)->Height=SCREEN_HEIGHT;
@@ -29,31 +37,31 @@ void Objectload_002(GlobalVariables* Main){
 	(Main->SpriteList+1)->FrameHeight=(Main->SpriteList+1)->Height;
 	(Main->SpriteList+1)->FrameNumber=1;
 	(Main->SpriteList+1)->speed=0;
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+2,"Items","fonts/Amatic-Bold.ttf",60);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+3,"Stats","fonts/Amatic-Bold.ttf",60);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+4,"Continue","fonts/Amatic-Bold.ttf",60);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+5,"Back","fonts/Amatic-Bold.ttf",60);
-	(Main->SpriteList+6)->Texture=LoadTexture(Main->MainRender,"media/items/itemmenu.bmp");
-	(Main->SpriteList+7)->Texture=LoadTexture(Main->MainRender,"media/items/potion1.bmp");
-	(Main->SpriteList+8)->Texture=LoadTexture(Main->MainRender,"media/items/potion2.bmp");
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+2,"Items","fonts/Pangolin-Regular.ttf",60,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+3,"Stats","fonts/Pangolin-Regular.ttf",60,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+4,"Continue","fonts/Pangolin-Regular.ttf",60,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+5,"Back","fonts/Pangolin-Regular.ttf",60,&error);
+	(Main->SpriteList+6)->Texture=LoadTexture(Main->MainRender,"media/items/itemmenu.bmp",&error);
+	(Main->SpriteList+7)->Texture=LoadTexture(Main->MainRender,"media/items/potion1.bmp",&error);
+	(Main->SpriteList+8)->Texture=LoadTexture(Main->MainRender,"media/items/potion2.bmp",&error);
 	color0.r=0;
 	color0.g=0;
 	color0.b=0;
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+9,"health potion","fonts/Amatic-Bold.ttf",50);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+10,"mana potion","fonts/Amatic-Bold.ttf",50);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+11,"Health","fonts/Amatic-Bold.ttf",50);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+12,"Defense","fonts/Amatic-Bold.ttf",50);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+13,"Attack","fonts/Amatic-Bold.ttf",50);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+9,"health potion","fonts/Halt.ttf",50,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+10,"mana potion","fonts/Halt.ttf",50,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+11,"Health","fonts/Halt.ttf",50,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+12,"Defense","fonts/Halt.ttf",50,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+13,"Attack","fonts/Halt.ttf",50,&error);
 	//SOUND 000.
 	*(Main->SoundList+0)=Mix_LoadWAV("media/sounds/000.wav");
-	if(*(Main->SoundList+0)==NULL) printf("could not load sound: %s",SDL_GetError());
+	if(*(Main->SoundList+0)==NULL) wprintf(L"\ncould not load sound: %s",SDL_GetError());
 	*(Main->SoundList+1)=Mix_LoadWAV("media/sounds/001.wav");
-	if(*(Main->SoundList+1)==NULL) printf("could not load sound: %s",SDL_GetError());
+	if(*(Main->SoundList+1)==NULL) wprintf(L"\ncould not load sound: %s",SDL_GetError());
 	//Music 0
 	i=rand()%2;
 	if(i==0) *(Main->SongList+0)=Mix_LoadMUS("media/music/200.mp3");
 	if(i==1) *(Main->SongList+0)=Mix_LoadMUS("media/music/201.mp3");
-	if(*(Main->SongList+0)==NULL) printf("could not load song: %s",SDL_GetError());
+	if(*(Main->SongList+0)==NULL) wprintf(L"\ncould not load song: %s",SDL_GetError());
 }//Shopkeeper
 void InstanceCreationCode_002(GlobalVariables* Main){ // main menu 1
 	(Main->InstanceList+(Main->ins_count))->ID =002;
@@ -338,11 +346,13 @@ void Room002(GlobalVariables* Main){
 	//free media
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
-	//load media
-	printf("Loading Store...");
-	Objectload_002(Main);
-	printf("Done!\n");
+	
+	wprintf(L"\n\n%c%c%c 		Room 002 		%c%c%c 	\n",4,4,4,4,4,4);
 
+	//load media
+	Objectload_002(Main);
+
+	//Create Main Instances
 	InstanceCreationCode_002(Main);
 	Main->menu=31;
 } //Bazar

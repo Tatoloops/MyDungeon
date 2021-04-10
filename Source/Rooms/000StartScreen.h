@@ -4,74 +4,104 @@ Room 000: Start Screen
 */
 
 void Objectload_000(GlobalVariables* Main){
-	printf("%c%c 	Objectload_000\n",176,177 );
+	wprintf(L"\n%c%c	ID:000 Presentation Screen",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
 	srand(time(NULL));
 	short i;
 
-	printf("%c 	Loading Background Image...",176);
+	wprintf(L"\n%c	Loading Background Image...",0x10);
 	//sprite 000.
 	SDL_Color color0={.r=0,.g=0,.b=0,.a=255}; // color de los textos "start" "quit"
 	i=rand()%14;
-	if 		(i==0) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (1).bmp");
-	else if (i==1) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (2).bmp");
-	else if (i==2) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (3).bmp");
-	else if (i==3) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (4).bmp");
-	else if (i==4) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (5).bmp");
-	else if (i==5) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (6).bmp");
-	else if (i==6) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (7).bmp");
-	else if (i==7) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (8).bmp");
-	else if (i==8) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (9).bmp");
-	else if (i==9) 	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (10).bmp");
-	else if (i==10)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (11).bmp");
-	else if (i==11)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (12).bmp");
-	else if (i==12) (((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (13).bmp");
-	else 			(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (14).bmp");
+	if 		(i==0)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (1).bmp",&error);
+	else if (i==1)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (2).bmp",&error);
+	else if (i==2)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (3).bmp",&error);
+	else if (i==3)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (4).bmp",&error);
+	else if (i==4)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (5).bmp",&error);
+	else if (i==5)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (6).bmp",&error);
+	else if (i==6)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (7).bmp",&error);
+	else if (i==7)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (8).bmp",&error);
+	else if (i==8)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (9).bmp",&error);
+	else if (i==9)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (10).bmp",&error);
+	else if (i==10)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (11).bmp",&error);
+	else if (i==11)	(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (12).bmp",&error);
+	else if (i==12) (((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (13).bmp",&error);
+	else			(((Main->SpriteList)+0)->Texture)=LoadTexture(Main->MainRender,"media/backgrounds/Warrior (14).bmp",&error);
 	
 	SDL_QueryTexture((Main->SpriteList+0)->Texture,NULL,NULL,&((Main->SpriteList+0)->Width),&((Main->SpriteList+0)->Height));
 	(Main->SpriteList+0)->FrameWidth=Main->SCREEN_WIDTH;
 	(Main->SpriteList+0)->FrameHeight=Main->SCREEN_HEIGHT;
 	(Main->SpriteList+0)->FrameNumber=1;
 	(Main->SpriteList+0)->speed=0;
-	printf("	Done	\n");
-	printf("%c 	Loading Textures...",176);
+	if (!error & 0x3)
+		wprintf(L"	Done");	
 
+
+	wprintf(L"\n%c 	Loading Textures...",0x10);
 	//sprite 001.
-	(Main->SpriteList+1)->Texture=LoadTexture(Main->MainRender,"media/items/companion.bmp");
+	error=~(~error|0x3);
+	(Main->SpriteList+1)->Texture=LoadTexture(Main->MainRender,"media/items/companion.bmp",&error);
 	SDL_QueryTexture((Main->SpriteList+1)->Texture,NULL,NULL,&((Main->SpriteList+1)->Width),&((Main->SpriteList+1)->Height));
 	(Main->SpriteList+1)->FrameWidth=(Main->SpriteList+1)->Width;
 	(Main->SpriteList+1)->FrameHeight=(Main->SpriteList+1)->Height;
 	(Main->SpriteList+1)->FrameNumber=1;
 	(Main->SpriteList+1)->speed=0;
-	printf(" 1");
+	if (!error&0x3)
+		wprintf(L" 1");
 	//sprite002
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+2,"Start","fonts/Amatic-Bold.ttf",60);
-	printf(" 2");
+	error=~(~error|0x1);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+2,"Start","fonts/Pangolin-Regular.ttf",60,&error);
+	if (!error & 0x3)
+		wprintf(L" 2");
 	//sprite003
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+3,"Quit","fonts/Amatic-Bold.ttf",60);
-	printf(" 3");
-	printf("	Done	\n");
-	printf("%c 	Loading Sound...",176);
+	error=~(~error|0x1);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+3,"Quit","fonts/Pangolin-Regular.ttf",60,&error);
+	if (!error&0x3){
+		wprintf(L" 3	Done");
+	}
+	
+	wprintf(L"\n%c	Loading Sound...",0x10);
+
+	error=~(~error|0x3);
 	//SOUND 000.
 	*(Main->SoundList+0)=Mix_LoadWAV("media/sounds/000.wav");
-	if(*(Main->SoundList+0)==NULL) printf("could not load sound: %s",SDL_GetError());
-	else printf(" 1");
+	if(*(Main->SoundList+0)==NULL) {
+		wprintf(L"\n%c	could not load sound: %S",0x488,SDL_GetError());
+		error|=0x3;
+	}
+	else {
+		wprintf(L" 1");
+		
+	}
 	//SOUND 001.
+	error=~(~error|0x1);
 	*(Main->SoundList+1)=Mix_LoadWAV("media/sounds/001.wav");
-	if(*(Main->SoundList+1)==NULL) printf("could not load sound: %s",SDL_GetError());
-	else printf(" 2");
-	printf("		Done	\n");
+	if(*(Main->SoundList+1)==NULL) {
+		wprintf(L"\n%c	Could not load sound: %S",0x488,SDL_GetError());
+		error|=0x3;
+	}
+	else if (!error & 0x3){
+		wprintf(L" 2		Done");
+	}
+	
 
-	printf("%c 	Loading Music...",176);
+	wprintf(L"\n%c 	Loading Music...",0x10);
 	//Music 0
-	i=rand()%3;
-	if(i==0) *(Main->SongList+0)=Mix_LoadMUS("media/music/000.mp3");
-	printf(" 1");
-	if(i==1) *(Main->SongList+0)=Mix_LoadMUS("media/music/001.mp3");
-	printf(" 2");
-	if(i==2) *(Main->SongList+0)=Mix_LoadMUS("media/music/002.mp3");
-	printf(" 3");
-	if(*(Main->SongList+0)==NULL) printf("could not load song: %s",SDL_GetError());
-	else printf("		Done	\n");
+	error=~(~error|0x1);
+	*(Main->SongList+0)=Mix_LoadMUS("media/music/000.mp3");
+	if(*(Main->SongList+0)==NULL) {
+		wprintf(L"\n%c	Could not load song: %S",0x488,SDL_GetError());
+	}
+	else wprintf(L"		Done\n");
+	if (error){
+		wprintf(L"\n%c%c 	Failed to load Room without problems \n",0x488,0x488);
+	}
 
 	return;
 }//Presentation screen
@@ -176,10 +206,10 @@ void Room000(GlobalVariables* Main){
 	//free media
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
+	wprintf(L"\n\n%c%c%c 		Room 000 		%c%c%c 	\n",4,4,4,4,4,4);
 	//load media
-	printf("%c%c 	Loading Menu...\n",176,177);
 	Objectload_000(Main);
-	printf("%c%c 	Done Loading Menu.\n",176,177);
+	//Create Main Instances
 	InstanceCreationCode_000(Main);
 	Main->menu=11;
 }//menu principal

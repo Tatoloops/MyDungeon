@@ -4,29 +4,37 @@ Room 003:Main Battlefield
 */
 
 void Objectload_003(GlobalVariables* Main){//Battlefield
-
+	wprintf(L"\n%c%c	ID:003 BattleField",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
+	
 	//sprites
-	CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+0,"media/backgrounds/400.bmp"); //background
-	CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+1,"media/characters/400.bmp"); //Enemy spot
-	CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+2,"media/characters/400.bmp"); //Player spot
+	CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+0,"media/backgrounds/400.bmp",&error); //background
+	CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+1,"media/characters/400.bmp",&error); //Enemy spot
+	CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+2,"media/characters/400.bmp",&error); //Player spot
 
 	SDL_Color Color1={.r=255,.g=255,.b=255,.a=255};
 	SDL_Color Color2={.r=255,.g=0,.b=100,.a=255};
 
-	CreateNonAnimatedFont(Main->MainRender,&Color1,Main->SpriteList+3,"Back to the Bazar","fonts/Amatic-Bold.ttf",60);
-	CreateNonAnimatedFont(Main->MainRender,&Color1,Main->SpriteList+4,"Next Battle","fonts/Amatic-Bold.ttf",60);
-	CreateNonAnimatedFont(Main->MainRender,&Color1,Main->SpriteList+5,"Retry","fonts/Amatic-Bold.ttf",60);
+	CreateNonAnimatedFont(Main->MainRender,&Color1,Main->SpriteList+3,"Back to the Bazar","fonts/Pangolin-Regular.ttf",60,&error);
+	CreateNonAnimatedFont(Main->MainRender,&Color1,Main->SpriteList+4,"Next Battle","fonts/Pangolin-Regular.ttf",60,&error);
+	CreateNonAnimatedFont(Main->MainRender,&Color1,Main->SpriteList+5,"Retry","fonts/Pangolin-Regular.ttf",60,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+6,"Back to the Bazar","fonts/Amatic-Bold.ttf",60);
-	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+7,"Next Battle","fonts/Amatic-Bold.ttf",60);
-	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+8,"Retry","fonts/Amatic-Bold.ttf",60);
+	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+6,"Back to the Bazar","fonts/Pangolin-Regular.ttf",60,&error);
+	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+7,"Next Battle","fonts/Pangolin-Regular.ttf",60,&error);
+	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+8,"Retry","fonts/Pangolin-Regular.ttf",60,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+9,"YOU WIN !","fonts/Arizonia-Regular.ttf",72);
-	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+10,"You're dead...","fonts/Arizonia-Regular.ttf",72);
+	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+9,"YOU WIN !","fonts/Stylish-Regular.ttf",72,&error);
+	CreateNonAnimatedFont(Main->MainRender,&Color2,Main->SpriteList+10,"You're dead...","fonts/MortifiedDrip.ttf",72,&error);
 
 
 	*(Main->SongList+0)=Mix_LoadMUS("media/music/400.mp3");
-	if(*(Main->SongList+0)==NULL) printf("could not load song: %s",SDL_GetError());
+	if(*(Main->SongList+0)==NULL) wprintf(L"could not load song: %s",SDL_GetError());
 	return;
 }//Battlefield
 void InstanceCreationCode_003(GlobalVariables* Main){ // Battlefield
@@ -64,8 +72,8 @@ void InstanceStepCode_003(GlobalVariables* Main,Instance* CurrentInstance){
 		win=3;
 		int newgold=rand()%50;
 		int newexp=rand()%50+50;
-		printf("+%d gold!\n",newgold);
-		printf("+%d exp!\n",newexp);
+		wprintf(L"+%d gold!\n",newgold);
+		wprintf(L"+%d exp!\n",newexp);
 		Main->saved_data->hp=(Main->InstanceList+1)->data[7];
 		if (Main->saved_data->hp<1)
 			Main->saved_data->hp=1;
@@ -267,15 +275,15 @@ void Room003(GlobalVariables* Main){
 	//free media
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
+	wprintf(L"\n\n%c%c%c 		Room 003 		%c%c%c 	\n",4,4,4,4,4,4);
 	//load media
-	printf("Loading Battlefield...");
 	Objectload_003(Main);
 	Objectload_005(Main);
 	Objectload_006(Main);
 	Objectload_007(Main);
 	Objectload_008(Main);
 	Objectload_009(Main);
-	printf("Done!\n");
+	
 
 	InstanceCreationCode_003(Main);
 	InstanceCreationCode_005(Main);
@@ -286,15 +294,14 @@ void Room004(GlobalVariables* Main){
 	//free media
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
+	wprintf(L"\n\n%c%c%c 		Room 004 		%c%c%c 	\n",4,4,4,4,4,4);
 	//load media
-	printf("Loading Battlefield...");
 	Objectload_003(Main);
 	Objectload_005(Main);
 	Objectload_006(Main);
 	Objectload_007(Main);
 	Objectload_008(Main);
 	Objectload_009(Main);
-	printf("Done!\n");
 
 	InstanceCreationCode_003(Main);
 	InstanceCreationCode_005(Main);
@@ -306,14 +313,13 @@ void Room005(GlobalVariables* Main){
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
 	//load media
-	printf("Loading Battlefield...");
+	wprintf(L"\n\n%c%c%c 		Room 005 		%c%c%c 	\n",4,4,4,4,4,4);
 	Objectload_003(Main);
 	Objectload_005(Main);
 	Objectload_006(Main);
 	Objectload_007(Main);
 	Objectload_008(Main);
 	Objectload_009(Main);
-	printf("Done!\n");
 
 	InstanceCreationCode_003(Main);
 	InstanceCreationCode_005(Main);
@@ -325,14 +331,13 @@ void Room006(GlobalVariables* Main){
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
 	//load media
-	printf("Loading Battlefield...");
+	wprintf(L"\n\n%c%c%c 		Room 006 		%c%c%c 	\n",4,4,4,4,4,4);
 	Objectload_003(Main);
 	Objectload_005(Main);
 	Objectload_006(Main);
 	Objectload_007(Main);
 	Objectload_008(Main);
 	Objectload_009(Main);
-	printf("Done!\n");
 
 	InstanceCreationCode_003(Main);
 	InstanceCreationCode_005(Main);
@@ -343,15 +348,14 @@ void Room007(GlobalVariables* Main){
 	//free media
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
+	wprintf(L"\n\n%c%c%c 		Room 007 		%c%c%c 	\n",4,4,4,4,4,4);
 	//load media
-	printf("Loading Battlefield...");
 	Objectload_003(Main);
 	Objectload_005(Main);
 	Objectload_006(Main);
 	Objectload_007(Main);
 	Objectload_008(Main);
 	Objectload_009(Main);
-	printf("Done!\n");
 
 	InstanceCreationCode_003(Main);
 	InstanceCreationCode_005(Main);

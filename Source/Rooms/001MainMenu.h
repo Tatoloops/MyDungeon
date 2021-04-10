@@ -8,9 +8,16 @@ Load Characters
 */
 
 void Objectload_001(GlobalVariables* Main){
-
+	wprintf(L"\n%c%c	ID:001 Main Menu",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
 	//sprite000
-	(Main->SpriteList+0)->Texture=LoadTexture(Main->MainRender,"media/backgrounds/100.bmp");
+	(Main->SpriteList+0)->Texture=LoadTexture(Main->MainRender,"media/backgrounds/100.bmp",&error);
 
 	SDL_QueryTexture((Main->SpriteList+0)->Texture,NULL,NULL,&((Main->SpriteList+0)->Width),&((Main->SpriteList+0)->Height));
 
@@ -26,89 +33,89 @@ void Objectload_001(GlobalVariables* Main){
 	int psize=60;
 
 	//color1
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+1,"Race :","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+1,"Race :","fonts/Pangolin-Regular.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+2,"Human","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+3,"Rabbitman","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+4,"Frogman","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+2,"Human","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+3,"Rabbitman","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+4,"Frogman","fonts/Halt.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+5,"Class :","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+6,"Warrior","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+7,"Archer","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+8,"Mage","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+5,"Class :","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+6,"Warrior","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+7,"Archer","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+8,"Mage","fonts/Halt.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+9,"Start","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+10,"Back","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+9,"Start","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+10,"Back","fonts/Pangolin-Regular.ttf",psize,&error);
 
 	//color2
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+11,"Race :","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+12,"Human","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+13,"Rabbitman","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+14,"Frogman","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+11,"Race :","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+12,"Human","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+13,"Rabbitman","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+14,"Frogman","fonts/Halt.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+15,"Class :","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+16,"Warrior","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+17,"Archer","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+18,"Mage","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+15,"Class :","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+16,"Warrior","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+17,"Archer","fonts/Halt.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+18,"Mage","fonts/Halt.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+19,"Start","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+20,"Back","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+19,"Start","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+20,"Back","fonts/Pangolin-Regular.ttf",psize,&error);
 	//stats menu
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+21,"Stats","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+22,"HP","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+23,"ATK","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+24,"DEF","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+21,"Stats","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+22,"HP","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+23,"ATK","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+24,"DEF","fonts/Pangolin-Regular.ttf",psize,&error);
 	//numbers
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+25,"0","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+26,"1","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+27,"2","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+28,"3","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+29,"4","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+30,"5","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+31,"6","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+32,"7","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+33,"8","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+34,"9","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+25,"0","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+26,"1","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+27,"2","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+28,"3","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+29,"4","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+30,"5","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+31,"6","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+32,"7","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+33,"8","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+34,"9","fonts/Pangolin-Regular.ttf",psize,&error);
 
 	//menu principal
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+35,"New Character","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+36,"Save Character","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+37,"Load Character","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+35,"New Character","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+36,"Save Character","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+37,"Load Character","fonts/Pangolin-Regular.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+38,"New Character","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+39,"Save Character","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+40,"Load Character","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+38,"New Character","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+39,"Save Character","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+40,"Load Character","fonts/Pangolin-Regular.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+41,"Save Character","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+42,"Load Character","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+41,"Save Character","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+42,"Load Character","fonts/Pangolin-Regular.ttf",psize,&error);
 
 	//sub menu de slots (save or load)
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+43,"Slot 1","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+44,"Slot 2","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+45,"Slot 3","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+46,"Slot 4","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+47,"Slot 5","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+48,"Slot 6","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+43,"Slot 1","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+44,"Slot 2","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+45,"Slot 3","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+46,"Slot 4","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+47,"Slot 5","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color0,Main->SpriteList+48,"Slot 6","fonts/Pangolin-Regular.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+49,"Slot 1","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+50,"Slot 2","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+51,"Slot 3","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+52,"Slot 4","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+53,"Slot 5","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+54,"Slot 6","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+49,"Slot 1","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+50,"Slot 2","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+51,"Slot 3","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+52,"Slot 4","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+53,"Slot 5","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color1,Main->SpriteList+54,"Slot 6","fonts/Pangolin-Regular.ttf",psize,&error);
 
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+55,"Slot 1","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+56,"Slot 2","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+57,"Slot 3","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+58,"Slot 4","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+59,"Slot 5","fonts/Amatic-Bold.ttf",psize);
-	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+60,"Slot 6","fonts/Amatic-Bold.ttf",psize);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+55,"Slot 1","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+56,"Slot 2","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+57,"Slot 3","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+58,"Slot 4","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+59,"Slot 5","fonts/Pangolin-Regular.ttf",psize,&error);
+	CreateNonAnimatedFont(Main->MainRender,&color2,Main->SpriteList+60,"Slot 6","fonts/Pangolin-Regular.ttf",psize,&error);
 	//Song 000
 	*(Main->SongList+0)=Mix_LoadMUS("media/music/100.mp3");
-	if(*(Main->SongList+0)==NULL) printf("could not load song: %s",SDL_GetError());
+	if(*(Main->SongList+0)==NULL) wprintf(L"could not load song: %s",SDL_GetError());
 }//Main Menu
 void InstanceCreationCode_001(GlobalVariables* Main){ // main menu 1
-
+	
 	(Main->InstanceList+(Main->ins_count))->ID =001;
 	(Main->InstanceList+(Main->ins_count))->x=0;
 	(Main->InstanceList+(Main->ins_count))->y=0;
@@ -132,6 +139,7 @@ void InstanceStepCode_001(GlobalVariables* Main,Instance* CurrentInstance){
 	int CharacterClass=((CurrentInstance)->data)[2];
 	int timer=((CurrentInstance)->data)[3];
 	int settings=((CurrentInstance)->data)[4];
+	
 	if (settings==1){  //subsetting: 1:new 2:save 3:load
 		if(Main->FrameKey[0]&1){ //up
 			--subsettings;
@@ -466,11 +474,14 @@ void Room001(GlobalVariables* Main){ //seleccion de personaje
 	//free media
 	FreeMedia(Main->SpriteList,Main->SongList,Main->SoundList);
 	Main->ins_count=0;
-	//load media
-	printf("Loading Room2...");
-	Objectload_001(Main);
-	printf("Done!\n");
 
+	wprintf(L"\n\n%c%c%c 		Room 001 		%c%c%c 	\n",4,4,4,4,4,4);
+
+	//load media
+	Objectload_001(Main);
+
+	//Create Main Instances
 	InstanceCreationCode_001(Main);
+	
 	Main->menu=21;
 }//menu de elección de personaje
