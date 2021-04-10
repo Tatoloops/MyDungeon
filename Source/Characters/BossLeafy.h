@@ -2,26 +2,42 @@
 
 */
 void Objectload_006(GlobalVariables* Main){
+	wprintf(L"\n%c%c	ID:003 Leafy",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
 	int spr_pos=31; // 7 sprites
 
 	//sprites
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/500.bmp",10,20,8); //Creation
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/501.bmp",15,4,8); //Idle
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/502.bmp",15,4,8); //walking
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/503.bmp",15,3,8); //jump
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/504.bmp",15,5,8); //dead
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/500.bmp",10,20,8,&error); //Creation
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/501.bmp",15,4,8,&error); //Idle
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/502.bmp",15,4,8,&error); //walking
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/503.bmp",15,3,8,&error); //jump
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/504.bmp",15,5,8,&error); //dead
 	//free media
 	SDL_DestroyTexture((Main->SpriteList+1)->Texture);
 	//here we destroy the media, because we are changing another Object's media files
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+1,"media/characters/505.bmp",5,3,8); //Enemy spot
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/506.bmp",15,3,8); //floor2
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+1,"media/characters/505.bmp",5,3,8,&error); //Enemy spot
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/506.bmp",15,3,8,&error); //floor2
 
 	return;
 }//Leaf Enemy
 void Objectload_007(GlobalVariables* Main){
+	wprintf(L"\n%c%c	ID:003 Sharp Leaf",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
 	int spr_pos=28; // 1 sprites
 	//sprites
-	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/507.bmp",10,19,8); //Creation
+	CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/507.bmp",10,19,8,&error); //Creation
 
 
 	return;
@@ -60,8 +76,8 @@ void InstanceCreationCode_006(GlobalVariables* Main){ // main menu 1
 
 
 		++(Main->ins_count);
-} //leaf monster
-void InstanceCreationCode_007(GlobalVariables* Main){ // main menu 1
+} 
+void InstanceCreationCode_007(GlobalVariables* Main){ // Sharp Leaf
 
 	(Main->InstanceList+(Main->ins_count))->ID =007;
 	(Main->InstanceList+(Main->ins_count))->sprite=Main->SpriteList+28;
@@ -78,13 +94,13 @@ void InstanceCreationCode_007(GlobalVariables* Main){ // main menu 1
 		(Main->InstanceList+(Main->ins_count))->sprite->FrameHeight);
 
 	((Main->InstanceList+(Main->ins_count))->data)[0]=rand()%5+1; //speed
-	((Main->InstanceList+(Main->ins_count))->data)[1]=7+Main->saved_data->lvl;//damage
+	((Main->InstanceList+(Main->ins_count))->data)[1]=3+Main->saved_data->lvl;//damage
 	((Main->InstanceList+(Main->ins_count))->data)[2]=0; 	//frame things
 
 	++(Main->ins_count);
-} //leaf attack
+} 
 
-void InstanceStepCode_006(GlobalVariables* Main,Instance* CurrentInstance){
+void InstanceStepCode_006(GlobalVariables* Main,Instance* CurrentInstance){	//Leafy
 	srand(time(NULL));
 	//nombrar variables
 	int CurrentSprites=31;
@@ -203,16 +219,17 @@ void InstanceStepCode_006(GlobalVariables* Main,Instance* CurrentInstance){
 	}
 	else if(action==4){ //attack1
 		--isborn;
-		if(isborn%12==0){
-			InstanceCreationCode_007(Main);
-			(Main->InstanceList+Main->ins_count-1)->rectangle2.x=(CurrentInstance)->rectangle2.x+((Main->InstanceList+Main->ins_count-1)->sprite->FrameWidth/2);
-			(Main->InstanceList+Main->ins_count-1)->rectangle2.y=(CurrentInstance)->rectangle2.y;
-			(Main->InstanceList+Main->ins_count-1)->data[0]=(rand()+attacknumber)%8; //speed
-		}
-		if(isborn==0){
+		
+		if(isborn<=0){
 			action=0;
 			(CurrentInstance)->sprite=(Main->SpriteList+CurrentSprites+1);
 			(CurrentInstance->data)[2]=0;
+		}
+		else if(isborn%16==0){
+			InstanceCreationCode_007(Main);
+			(Main->InstanceList+Main->ins_count-1)->rectangle2.x=(CurrentInstance)->rectangle2.x+((Main->InstanceList+Main->ins_count-1)->sprite->FrameWidth/2);
+			(Main->InstanceList+Main->ins_count-1)->rectangle2.y=(CurrentInstance)->rectangle2.y;
+			(Main->InstanceList+Main->ins_count-1)->data[0]=((rand()%isborn)%5)+1; //speed
 		}
 	}
 	else if(action==-1){ //being born

@@ -1,8 +1,12 @@
+#include "Version.h"
+#include "Savedata/V0.001.h"
+
+
 void SaveSlot(Save* save_data,int slot){
 	short i;
 	short j;
 	for (i=0;i<20;++i){
-		(save_data+slot)->name[i]=(save_data)->name[i];
+	(save_data+slot)->name[i]=(save_data)->name[i];
 	}
 	(save_data+slot)->race=(save_data->race);
 	(save_data+slot)->CharacterClass=(save_data->CharacterClass);
@@ -25,7 +29,7 @@ void SaveSlot(Save* save_data,int slot){
 
 	FILE * save;
 	if ((save = fopen("save.dat", "w")) == NULL ){
-        printf("File could not be opened.\n");
+        wprintf(L"File could not be opened.\n");
     }
  	else{
  		for(i=1;i<7;++i){
@@ -50,6 +54,7 @@ void SaveSlot(Save* save_data,int slot){
  		}
  	}
 }
+
 void LoadSlot(Save* save_data,int slot){
 	short i;
 	(save_data->race)=(save_data+slot)->race;
@@ -256,7 +261,7 @@ void levelup(Save* saved_data){
 		saved_data->movspeed+=0.02;
 		saved_data->atkspeed-=1;
 	}
-	printf("level up, new stats:\n Level:%d \n HP: %d \n Energy: %d \n  Defense: %d \n Atack: %d \n  Movement speed: %f \n Atack speed: %f \n",
+	wprintf(L"level up, new stats:\n Level:%d \n HP: %d \n Energy: %d \n  Defense: %d \n Atack: %d \n  Movement speed: %f \n Atack speed: %f \n",
 		saved_data->lvl,
 		saved_data->maxhp,
 		saved_data->maxenergy,
@@ -264,7 +269,7 @@ void levelup(Save* saved_data){
 		saved_data->atk,
 		saved_data->movspeed,
 		saved_data->atkspeed);
-	printf("%d\n",saved_data->inv[0]);
+	wprintf(L"%d\n",saved_data->inv[0]);
 }
 // presion de las "key"
 void keypressed(char* key){

@@ -6,64 +6,83 @@ Main Character
 
 */
 void Objectload_005(GlobalVariables* Main){
+	wprintf(L"\n%c%c	ID:005 Main Character",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
 	int spr_pos=11;
 	//sprites
 	if(Main->saved_data->race==1){
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/player103 (1).bmp"); //standing :right
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/player103 (2).bmp"); //down
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/player103 (3).bmp"); //left
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/player103 (4).bmp"); //up
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/player103 (5).bmp",10,4,8); //muerte
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+5,"media/characters/player103 (6).bmp",10,4,8); //up
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/player103 (7).bmp",10,4,8); //right
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+7,"media/characters/player103 (8).bmp",10,4,8); //down
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/player103 (1).bmp",&error); //standing :right
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/player103 (2).bmp",&error); //down
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/player103 (3).bmp",&error); //left
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/player103 (4).bmp",&error); //up
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/player103 (5).bmp",10,4,8,&error); //muerte
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+5,"media/characters/player103 (6).bmp",10,4,8,&error); //up
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/player103 (7).bmp",10,4,8,&error); //right
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+7,"media/characters/player103 (8).bmp",10,4,8,&error); //down
 	}
 	else if(Main->saved_data->race==2){
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/player201 (1).bmp"); //standing :right
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/player201 (2).bmp"); //down
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/player201 (3).bmp"); //left
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/player201 (4).bmp"); //up
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/player201 (5).bmp",10,4,4); //muerte
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+5,"media/characters/player201 (6).bmp",10,4,4); //up
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/player201 (7).bmp",10,2,4); //right
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+7,"media/characters/player201 (8).bmp",10,2,4); //down
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/player201 (1).bmp",&error); //standing :right
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/player201 (2).bmp",&error); //down
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/player201 (3).bmp",&error); //left
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/player201 (4).bmp",&error); //up
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/player201 (5).bmp",10,4,4,&error); //muerte
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+5,"media/characters/player201 (6).bmp",10,4,4,&error); //up
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/player201 (7).bmp",10,2,4,&error); //right
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+7,"media/characters/player201 (8).bmp",10,2,4,&error); //down
 	}
 	else if(Main->saved_data->race==3){
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/player303 (1).bmp"); //standing :right
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/player303 (2).bmp"); //down
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/player303 (3).bmp"); //left
-			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/player303 (4).bmp"); //up
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/player303 (5).bmp",10,7,8); //muerte
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+5,"media/characters/player303 (6).bmp",10,7,8); //up
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/player303 (7).bmp",10,7,8); //right
-			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+7,"media/characters/player303 (8).bmp",10,7,8); //down
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+0,"media/characters/player303 (1).bmp",&error); //standing :right
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+1,"media/characters/player303 (2).bmp",&error); //down
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+2,"media/characters/player303 (3).bmp",&error); //left
+			CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+3,"media/characters/player303 (4).bmp",&error); //up
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+4,"media/characters/player303 (5).bmp",10,7,8,&error); //muerte
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+5,"media/characters/player303 (6).bmp",10,7,8,&error); //up
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+6,"media/characters/player303 (7).bmp",10,7,8,&error); //right
+			CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+7,"media/characters/player303 (8).bmp",10,7,8,&error); //down
 	}
 	return;
 }//Player
 void Objectload_008(GlobalVariables* Main){
+	wprintf(L"\n%c%c	ID:008 Magical Ball",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Room.
+	*/
 
 	int spr_pos=11; // 1 sprites
 	//sprites
 	if (Main->saved_data->race==1) 		//human mage
-		CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player103 (9).bmp",10,4,4); //Creation
+		CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player103 (9).bmp",10,4,4,&error); //Creation
 	else if (Main->saved_data->race==2) 	//Rabbitman mage
-		CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player203 (9).bmp",10,4,4); //Creation
+		CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player203 (9).bmp",10,4,4,&error); //Creation
 	else 							//Frogman mage
-		CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player303 (9).bmp",10,4,4); //Creation
+		CreateAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player303 (9).bmp",10,4,4,&error); //Creation
 	return;
 }//Magical Attack
 void Objectload_009(GlobalVariables* Main){
+	wprintf(L"\n%c%c	ID:009 Arrow",0xf,0x10);
+	char error=0;
+	/*
+	error bitmap:
+	0000 0001:	There is an error in the Current Item.
+	0000 0010:	There is an error in the Current Section.
+	0000 0100:	There is an error in the Whole Code.
+	*/
 
 	int spr_pos=12; // 1 sprites
 	//sprites
-	if (Main->saved_data->race==1) 		//human archer
-		CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player013.bmp"); //Creation
-	else if (Main->saved_data->race==2) 	//Rabbitman archer
-		CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player013.bmp"); //Creation
-	else 							//Frogman archer
-		CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player013.bmp"); //Creation
+	CreateNonAnimatedSprite(Main->MainRender,Main->SpriteList+spr_pos+10,"media/characters/player013.bmp",&error); //Creation
 	return;
-}//
+}//Arrow
 
 void InstanceCreationCode_005(GlobalVariables* Main){ // main menu 1
 	int spr_pos=11;

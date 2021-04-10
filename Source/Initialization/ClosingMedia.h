@@ -37,7 +37,7 @@ void closing_window(SDL_Window* mywindow){
 }
 void FreeMedia(Sprite* SpriteList,Mix_Music**song,Mix_Chunk**sound){
 	short i;
-	printf("Freeing Media Files...");
+	wprintf(L"\n%c	Deleting Media Files...",0x11);
 	for(i=0;i<MaxSprites;++i){
 		if((SpriteList+i)->Texture!=NULL){
 			SDL_DestroyTexture((SpriteList+i)->Texture);
@@ -56,7 +56,7 @@ void FreeMedia(Sprite* SpriteList,Mix_Music**song,Mix_Chunk**sound){
 			*(sound+i)=NULL;
 		}
 	}
-	printf("Done!\n");
+	wprintf(L"Done!");
 }
 void closing(SDL_Window* mainwindow){ //closing game
     //Deallocate main surface
@@ -65,7 +65,7 @@ void closing(SDL_Window* mainwindow){ //closing game
     closing_window( mainwindow );
 
     //Quit SDL subsystems
-    printf("Goodbye User...");
+    wprintf(L"\n%c%c	Goodbye User...",0x11,0x11);
     TTF_Quit();
     Mix_CloseAudio();
     SDL_VideoQuit();
