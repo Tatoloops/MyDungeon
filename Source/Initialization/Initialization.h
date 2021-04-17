@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <wchar.h>
 #include <stdlib.h>
 #include <time.h>
@@ -10,100 +11,11 @@
 #include <io.h>
 #include <fcntl.h>
 
-#define MaxSprites 		210
-#define MaxInstances 	100
-#define MaxSongs		4
-#define MaxSounds		10
-#define KeyNumber		14
-#define MatrixSpace		200 //space between boxes of the matrixes
-#define MaxDataSaves	7
+#include "LoadTextures.h"
 
 
 
 
-
-typedef struct{
-    SDL_Texture* Texture;
-    int Width;          //size of the whole file in pixels
-    int Height;
-    int FrameWidth;     //size of each rectangle
-    int FrameHeight;
-    int FrameNumber;    //number of frames
-    int speed;
-
-    int FramesToTheLeft;
-}Sprite;
-
-typedef struct{
-    int ID;
-    char name[20];
-    float x;
-    float y;
-    //int* IDList;
-    Sprite* sprite;
-    SDL_Rect rectangle1;    //sprite rectangle
-    SDL_Rect rectangle2;    //position in window rectangle
-    int data[20];
-    float floatdata[20];
-    char dataname[20];
-}Instance;
-
-typedef struct{
-    char name[20];
-    int race; // 1: human 2:Rabbitman 3:dwarf
-    int CharacterClass; //1: warrior 2:archer 3:mage
-    int lvl;
-    int exp;
-    int gold;
-
-
-    int maxhp;
-    int maxenergy;
-    int hp;
-    int def;
-    int atk;
-    int atkspec;
-    int energy;
-
-	float movspeed;
-	float atkspeed;
-
-	int inv[20];
-	int battle;
-}Save;
-
-typedef struct{
-	/*  
-	GameVersion: "1.016.001'\0'"
-	->GameModel         =   "001'\0'"
-	->GameMajorUpdate   =   "016'\0'"  
-	->GameRevision      =   "001'\0'"    */ 
-	unsigned char GameVersion[12];
-	unsigned char GameModel[4];
-	unsigned char GameMajorUpdate[4];
-	unsigned char GameRevision[4];
-
-}GameVersion;
-typedef struct{
-	SDL_Window* MainWindow;
-	SDL_Renderer* MainRender;
-
-	Instance* InstanceList;
-	Sprite* SpriteList;
-	Mix_Music** SongList;
-	Mix_Chunk** SoundList;
-
-	char PreviousKey[KeyNumber];
-	char FrameKey[KeyNumber];
-	int menu;
-	int ins_count;
-	int SCREEN_WIDTH;
-	int SCREEN_HEIGHT;
-	Save saved_data[MaxDataSaves];
-	FILE* FileSavedata;
-	GameVersion GameVersionCurrent;
-	GameVersion GameVersionData;
-}GlobalVariables;
 
 void SetUTF8(){
 	/*
@@ -167,91 +79,154 @@ void InitializeInstance(Instance* ins){
 	ins->x=0;
 	ins->y=0;
 }
+void InitializeGlobal(GlobalVariables* Main){
+	Main->RoomState=0x1;
+	Main->RoomCurrentID=001;
+	strcpy(Main->SavedataName,"Savedata.dat\0");
+	for(unsigned short i=0;i<MaxSprites;++i)
+		InitializeSprite(Main->SpriteList+i);
+	for(unsigned short i=0;i<MaxInstances;++i)
+		InitializeInstance(Main->InstanceList+i);
+	for(unsigned short i=0;i<MaxSongs;++i)
+		*(Main->SongList+i)=NULL;
+	for(unsigned short i=0;i<MaxSounds;++i)
+		*(Main->SoundList+i)=NULL;
+}
 void InitializeKeys(char* array,int n){ //puntero a array - n: numero de elemntos en el array
 	int i;
 	for (i=0;i<n;++i)
 		*(array+i)=0x8;
 }
-/*      SDL TEXTURES        */
-/*
-SDL_Surface* optimizedsurface(SDL_Surface* mainsurface,const char*impath ){
-    SDL_Surface* optimized_surf=NULL;
-    SDL_Surface* surface=SDL_LoadBMP(impath);
-    if(surface==NULL)
-        printf("error: %s",SDL_GetError());
-    else{
-        optimized_surf=SDL_ConvertSurface(surface,mainsurface->format,0);
-        if (optimized_surf==NULL)
-            printf("error: %s",SDL_GetError());
-    }
-    closing_surface(surface);
-    return optimized_surf;
+
+int StringWidthEnglish(const char* StringRead,Language* Lang,int Flags){
+	/*	
+	LangSpr:	First pointer to Language Sprite.
+	StringRead: String to get the width from.
+	Flags:		
+
+		XXXX XXXX 0000 0000 0000 0000 0000 0000:Languages:
+			0000 0001:English Language.
+			0000 0010:Spanish Language.
+			0000 0011:French Language.
+			0000 0100:German Language.
+			0000 0101:Japanese Language.
+			0000 0110:Russian
+			0000 0111:Indonesian.
+			0000 1000:Ukranian.
+			...
+		4x 4x 1000 0000 0000 0000 0000 0000:Include All Numbers.
+		4x 4x 0100 0000 0000 0000 0000 0000:Include LowerCase Letters.
+		4x 4x 0010 0000 0000 0000 0000 0000:Include UpperCase Letters.
+		4x 4x 0001 0000 0000 0000 0000 0000:Include All Symbols.
+	*/
+	int PixelWidth=0;
+	int SpaceWidth=10;	//pixels used by space
+	if (Flags>>24 == 1)		//English Language
+		if (Flags&0x800000 && Flags&0x400000 && Flags&0x200000 && Flags&0x100000){
+			//Numbers-LowerC-UpperC-Symbols
+			char Character;
+			unsigned short i=0; //count
+			do{
+				Character=StringRead[i];
+				while (Character==' '){
+					i++;
+					PixelWidth+=SpaceWidth;
+					Character=StringRead[i];
+				}
+				if(Character!='\0')
+					PixelWidth+=(Lang->SrcRect+Character-33)->w;
+				i++;
+			}
+			while (Character!='\0');
+		}
+	return PixelWidth;
 }
-*/
-SDL_Surface* LoadTexture(SDL_Renderer* MainRender,const char* impath,char* error){
-	SDL_Texture* newtexture =NULL;
-	SDL_Surface* surface=SDL_LoadBMP(impath);
-	if(surface==NULL){
-		wprintf(L"\n%c	Error:%S",0x488,SDL_GetError());
-		*(error)=*error|0x3;
+
+
+int RoomPlacePhraseRects(InsText* Ins,const char* Phrase,Language* Lang,int x, int y,int Flags){
+	/*	
+	Phrase:		Phrase to place, must contain '\0'.
+	ImgSpot: 	Pointer to Image.
+	FirstSpr:	Pointer to Alphabet sprite.
+	x:			Left most pixel in the showing screen.
+				Middle pixel if centered.
+	y:			Top most pixel in the showing screen.
+	Flags:		
+
+		XXXX XXXX 0000 0000 0000 0000 0000 0000:Languages:
+			0000 0001:English Language.
+			0000 0010:Spanish Language.
+			0000 0011:French Language.
+			0000 0100:German Language.
+			0000 0101:Japanese Language.
+			0000 0110:Russian
+			0000 0111:Indonesian.
+			0000 1000:Ukranian.
+			...
+		4x 4x 1000 0000 0000 0000 0000 0000:Include All Numbers.
+		4x 4x 0100 0000 0000 0000 0000 0000:Include LowerCase Letters.
+		4x 4x 0010 0000 0000 0000 0000 0000:Include UpperCase Letters.
+		4x 4x 0001 0000 0000 0000 0000 0000:Include All Symbols.
+		4x 4x 0000 XX00 0000 0000 0000 0000:Phrase X Position
+			01:From Right (X) to Left.			[0xuuu40000]
+			10:From Left (X) to right.			[0xuuu80000]
+			11:Centered (X) is middle point.	[0xuuuC0000]
+	*/
+	int NumberOfItemsPlaced=0;
+	int SpaceWidth=10;
+
+	int CRoom=0;
+	int PhraseWidth;
+	int Top,Left;
+	if (Flags & 0x00080000 && Flags & 0x00040000){
+		//Centered.
+		PhraseWidth=StringWidthEnglish(Phrase,Lang,Flags);
+		Top=y;
+		Left=x-PhraseWidth/2;
 	}
-	else{
-		newtexture=SDL_CreateTextureFromSurface(MainRender,surface);
-		if (newtexture==NULL){
-			wprintf(L"\n%c	Error loading texture %S: %S",0x488,impath,SDL_GetError());
-			*error|=0x7;
+	else if (Flags & 0x00080000){
+		//Left to right
+		Top=y;
+		Left=x;
+	}
+	else if (Flags & 0x00040000){
+		//Right to Left
+		PhraseWidth=StringWidthEnglish(Phrase,Lang,Flags);
+		Top=y;
+		Left=x-PhraseWidth;
+	}
+	int i=0; // count
+
+	PhraseWidth=0;
+	if (Flags>>24 == 1 && Flags&0x800000 && Flags&0x400000 && Flags&0x200000 && Flags&0x100000){//English Language
+		while (Phrase[i]!='\0'){
+			while(Phrase[i]==' '){
+				PhraseWidth+=SpaceWidth;
+				i++;
+			}
+			while(Phrase[i]!= '\0' && (Phrase[i]<'!' ||Phrase[i]>'~')){
+				++i;
+			}
+			if(Phrase[i]!='\0'){
+				Ins[NumberOfItemsPlaced].PtrToLang=Lang;
+
+			Ins[NumberOfItemsPlaced].SrcR.x=Lang->SrcRect[Phrase[i]-'!'].x;
+			Ins[NumberOfItemsPlaced].SrcR.y=Lang->SrcRect[Phrase[i]-'!'].y;
+			Ins[NumberOfItemsPlaced].SrcR.w=Lang->SrcRect[Phrase[i]-'!'].w;
+			Ins[NumberOfItemsPlaced].SrcR.h=Lang->SrcRect[Phrase[i]-'!'].h;
+
+			Ins[NumberOfItemsPlaced].DestR.x=Left+PhraseWidth;
+			Ins[NumberOfItemsPlaced].DestR.y=y;
+			Ins[NumberOfItemsPlaced].DestR.w=Lang->SrcRect[Phrase[i]-'!'].w;
+			Ins[NumberOfItemsPlaced].DestR.h=Lang->SrcRect[Phrase[i]-'!'].h;		
+
+			PhraseWidth+=Ins[NumberOfItemsPlaced].DestR.w;
+			NumberOfItemsPlaced++;
+			//wprintf(L" \nplaced itemsBBB:%d",NumberOfItemsPlaced);
+			++i;
+			}
 		}
 	}
-	SDL_FreeSurface(surface);
-	return newtexture;
-}
-
-SDL_Texture* CreateTextureFont(SDL_Renderer* MainRender,SDL_Color* color,const char*text,int ptsize,const char*impath,char* error){
-	TTF_Font*font;
-	font=TTF_OpenFont(impath,ptsize);
-	if (font==NULL){ //ptsize es el size del font (size de la letra)
-		wprintf(L"\n	Error:%s",TTF_GetError());
-		*error=(*error)|0x7;
-		}
-	SDL_Surface*surface;
-	surface=TTF_RenderText_Solid(font,text,*color);
-	SDL_Texture* texture=SDL_CreateTextureFromSurface(MainRender,surface);
-	SDL_FreeSurface(surface);
-	TTF_CloseFont(font);
-	return texture;
-}
-/*      Sprites         */
-void CreateAnimatedSprite(SDL_Renderer* MainRender,Sprite* spr,const char* impath,int speed,int frames,int framestoleft,char* error){
-	spr->Texture=LoadTexture(MainRender,impath,error);
-	SDL_QueryTexture(spr->Texture,NULL,NULL,&(spr->Width),&(spr->Height));
-
-	spr->FrameWidth=(spr->Width)/framestoleft;
-
-	int SquaresHeight;
-
-	if (frames>framestoleft)
-		SquaresHeight=spr->Height/((frames/framestoleft)+1);
-	else
-		SquaresHeight=spr->Height;
-
-	spr->FrameHeight=SquaresHeight;
-	spr->FrameNumber=frames;
-	spr->speed=speed;
-	spr->FramesToTheLeft=framestoleft;
-}
-void CreateNonAnimatedSprite(SDL_Renderer* MainRender,Sprite* spr,const char* impath,char* error){
-	spr->Texture=LoadTexture(MainRender,impath,error);
-	SDL_QueryTexture(spr->Texture,NULL,NULL,&(spr->Width),&(spr->Height));
-	spr->FrameWidth=(spr->Width);
-	spr->FrameHeight=(spr->Height);
-	spr->FrameNumber=1;
-	spr->speed=0;
-}
-void CreateNonAnimatedFont(SDL_Renderer* MainRender,SDL_Color* color,Sprite* spr,char* text,const char* impath,int size,char* error){
-	spr->Texture=CreateTextureFont(MainRender,color,text,size,impath,error);
-	SDL_QueryTexture(spr->Texture,NULL,NULL,&(spr->Width),&(spr->Height));
-	spr->FrameWidth=spr->Width;
-	spr->FrameHeight=spr->Height;
-	spr->FrameNumber=1;
-	spr->speed=0;
+	//wprintf(L" \nplaced items:%d",NumberOfItemsPlaced);
+	return NumberOfItemsPlaced;
 }

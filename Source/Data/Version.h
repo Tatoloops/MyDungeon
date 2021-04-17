@@ -52,7 +52,7 @@ void GameSetVersion(GameVersion* SetVersionToMe,unsigned char* ver){
 
 /*			File Handler Functions			*/
 
-void GameSetVersionInFile(GameVersion* SetVersionToMe,FILE* FileSavedata){
+void GameSetVersionInFile(GameVersion* SetVersionToMe,FILE* Savedata){
 	unsigned short BufferRead[30];
 
 	
@@ -78,13 +78,13 @@ void GameSetVersionInFile(GameVersion* SetVersionToMe,FILE* FileSavedata){
 	
 	for (unsigned short i=3;i<30;++i)
 		BufferRead[i]+=EncryptMainSeal;
-	fwrite(BufferRead, sizeof(unsigned short), 30, FileSavedata);
+	fwrite(BufferRead, sizeof(unsigned short), 30, Savedata);
 	//return;
 }
 void GameGetVersionFromFile(GlobalVariables* Main,GameVersion* SetVersionToMe){
 	unsigned short BufferRead[30];
-	fread(BufferRead,sizeof(unsigned short),30,Main->FileSavedata);
-	//fgets(BufferRead,30,Main->FileSavedata);
+	fread(BufferRead,sizeof(unsigned short),30,Main->Savedata);
+	//fgets(BufferRead,30,Main->Savedata);
 	unsigned short EncryptMainSeal=BufferRead[0]+BufferRead[1]+BufferRead[2];
 
 	//Remove Main Seal
@@ -147,46 +147,44 @@ char VerifyingVersion(GameVersion* SetVersionToMe){
 /*			Main			*/
 void GameVersionMain(GlobalVariables* Main){
 	unsigned char Version[12];
-	unsigned char FileName[13];
 	strcpy(Version,"000.001.001\0");
-	strcpy(FileName,"Savedata.dat\0");
 	//wprintf(L"Current Game Version asdasd: %s\n",Version);
 	GameSetVersion(&Main->GameVersionCurrent,Version);
 	//wprintf(L"Current Game Version: %s\n",Main->GameVersionCurrent.GameVersion);
-	/*		Loading or Creating new FileSavedata	*/
+	/*		Loading or Creating new Savedata	*/
 	//wprintf(L"a\n");
-	Main->FileSavedata = fopen (FileName, "r");
+	Main->Savedata = fopen (Main->SavedataName, "r");
 	//wprintf(L"b\n");
-	if (Main->FileSavedata ==NULL){//Create New Savedata
-		fclose(Main->FileSavedata);
+	if (Main->Savedata ==NULL){//Create New Savedata
+		fclose(Main->Savedata);
 
 		wprintf(L"\n%c	No Savedata found! Creating new Savedata...",0x466);
 		GameSetVersion(&Main->GameVersionData,Version);
 
 		//Opening File
-		Main->FileSavedata =fopen (FileName, "w");
+		Main->Savedata =fopen (Main->SavedataName, "w");
 		//Working in the File, setting the Version of the game
-		GameSetVersionInFile(&Main->GameVersionData,Main->FileSavedata);
+		GameSetVersionInFile(&Main->GameVersionData,Main->Savedata);
 		//Closing File
-		fclose(Main->FileSavedata);
+		fclose(Main->Savedata);
 
 	}
 	else{//Savedata Found!
 		//Getting previous game version.
 		GameGetVersionFromFile(Main,&Main->GameVersionData);
-		fclose(Main->FileSavedata);
+		fclose(Main->Savedata);
 
 		char corruption=VerifyingVersion(&Main->GameVersionData);
 		if (corruption&0x2){	//Matching Savedata
-			wprintf(L"\n%c	FileSavedata Found!",0x466);
+			wprintf(L"\n%c	Savedata Found!",0x466);
 			wprintf(L"\n%c	Savedata Version: ",0x466);
 			wprintf(L"%S",Main->GameVersionData.GameVersion);
 		}
 		else{					//Corrupted Savedata
-			Main->FileSavedata =fopen (FileName, "w");
+			Main->Savedata =fopen (Main->SavedataName, "w");
 			GameSetVersion(&Main->GameVersionData,Version);
-			GameSetVersionInFile(&Main->GameVersionData,Main->FileSavedata);
-			fclose(Main->FileSavedata);
+			GameSetVersionInFile(&Main->GameVersionData,Main->Savedata);
+			fclose(Main->Savedata);
 			wprintf(L"\n%c	Savedata Corrupted, New Savedata Created.",0x466);
 
 			
